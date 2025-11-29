@@ -3,6 +3,7 @@ package handler
 import (
 	"backend/service"
 	"fmt"
+	"log"
 	"net/http"
 	"path/filepath"
 	"strconv"
@@ -58,6 +59,8 @@ func UploadNewModel(c *gin.Context) {
 	if name == "" {
 		name = file.Filename
 	}
+
+	log.Println(file.Filename)
 
 	vInfo, err := service.ReadVersion()
 	if err != nil {

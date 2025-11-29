@@ -88,7 +88,7 @@ func UploadNewModel(filePath string, version int, name string) (*VersionEntry, e
 	checksum := hex.EncodeToString(sum[:])
 
 	ctx := context.Background()
-	publicID := fmt.Sprintf("models/model_v%d_%s", version, filepath.Base(filePath))
+	publicID := fmt.Sprintf("models/%s", filepath.Base(filePath))
 	uploadResp, err := config.CLD.Upload.Upload(ctx, filePath, uploader.UploadParams{
 		PublicID:     publicID,
 		ResourceType: "raw",

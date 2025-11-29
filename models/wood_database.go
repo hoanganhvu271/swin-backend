@@ -5,4 +5,5 @@ type WoodDatabase struct {
 	Title       string `firestore:"title"`
 	Size        int    `firestore:"size"`
 	Description string `firestore:"description"`
+	Image       string `firestore:"image"`
 }
