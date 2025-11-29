@@ -3,11 +3,21 @@ package router
 import (
 	"backend/handler"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+
+	// CORS middleware
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	model := r.Group("/model-api")
 	{
@@ -21,14 +31,25 @@ func SetupRouter() *gin.Engine {
 	{
 		library.POST("/upload_image", handler.UploadImage)
 
-		library.POST("/database/save", handler.SaveWoodDatabase)
-		library.GET("/database/get", handler.GetWoodDatabase)
-		library.GET("/database/list", handler.ListWoodDatabase)
+		// Wood Database (Collection) - RESTful APIs
+		database := library.Group("/database")
+		{
+			database.GET("/list", handler.ListWoodDatabase)         // GET /database/list?limit=10&offset=0
+			database.GET("/get", handler.GetWoodDatabase)           // GET /database/get?id=xxx
+			database.POST("/create", handler.CreateWoodDatabase)    // POST /database/create
+			database.PUT("/update/:id", handler.UpdateWoodDatabase) // PUT /database/update/:id
+			database.DELETE("/delete", handler.DeleteWoodDatabase)  // DELETE /database/delete?id=xxx
+		}
 
-		library.POST("/piece/save", handler.SaveWoodPiece)
-		library.GET("/piece/get", handler.GetWoodPiece)
-		library.GET("/piece/list", handler.ListWoodPiecesByDatabase)
-		library.DELETE("/piece/delete", handler.DeleteWoodPiece)
+		// Wood Piece - RESTful APIs
+		piece := library.Group("/piece")
+		{
+			piece.GET("/list", handler.ListWoodPiecesByDatabase) // GET /piece/list?database_id=xxx&limit=10&offset=0
+			piece.GET("/get", handler.GetWoodPiece)              // GET /piece/get?id=xxx
+			piece.POST("/create", handler.CreateWoodPiece)       // POST /piece/create
+			piece.PUT("/update/:id", handler.UpdateWoodPiece)    // PUT /piece/update/:id
+			piece.DELETE("/delete", handler.DeleteWoodPiece)     // DELETE /piece/delete?id=xxx
+		}
 	}
 
 	return r
