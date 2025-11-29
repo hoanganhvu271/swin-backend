@@ -1,0 +1,12 @@
+{
+  "current_version": 1,
+  "versions": [
+    {
+      "version": 1,
+      "file": "https://res.cloudinary.com/dyc1c2elf/raw/upload/v1764396247/models/model_v1_model_v1_best2.onnx",
+      "name": "best2.onnx",
+      "checksum": "8a76c29be21cf5293c23d4fc2bfe67aaaeaf03ddc825ea393cce71b832452d96",
+      "size": 6785155
+    }
+  ]
+}
