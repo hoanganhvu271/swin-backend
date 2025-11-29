@@ -10,9 +10,9 @@ var CLD *cloudinary.Cloudinary
 
 func InitCloudinary() {
 	cld, err := cloudinary.NewFromParams(
-		"dyc1c2elf",
-		"843265166772128",
-		"6Dqn-lTuycx17IJsjAMnpAcGP9s",
+		"key",
+		"key",
+		"6Dqn-key",
 	)
 	if err != nil {
 		log.Fatalf("Failed to init Cloudinary: %v", err)
