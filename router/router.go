@@ -12,7 +12,7 @@ func SetupRouter() *gin.Engine {
 
 	// CORS middleware
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -29,27 +29,22 @@ func SetupRouter() *gin.Engine {
 
 	library := r.Group("/library-api")
 	{
+		// Upload image
 		library.POST("/upload_image", handler.UploadImage)
 
 		// Wood Database (Collection) - RESTful APIs
-		database := library.Group("/database")
-		{
-			database.GET("/list", handler.ListWoodDatabase)         // GET /database/list?limit=10&offset=0
-			database.GET("/get", handler.GetWoodDatabase)           // GET /database/get?id=xxx
-			database.POST("/create", handler.CreateWoodDatabase)    // POST /database/create
-			database.PUT("/update/:id", handler.UpdateWoodDatabase) // PUT /database/update/:id
-			database.DELETE("/delete", handler.DeleteWoodDatabase)  // DELETE /database/delete?id=xxx
-		}
+		library.GET("/database/list", handler.ListWoodDatabase)         // GET /library-api/database/list?limit=10&offset=0
+		library.GET("/database/get", handler.GetWoodDatabase)           // GET /library-api/database/get?id=xxx
+		library.POST("/database/create", handler.CreateWoodDatabase)    // POST /library-api/database/create
+		library.PUT("/database/update/:id", handler.UpdateWoodDatabase) // PUT /library-api/database/update/:id
+		library.DELETE("/database/delete", handler.DeleteWoodDatabase)  // DELETE /library-api/database/delete?id=xxx
 
 		// Wood Piece - RESTful APIs
-		piece := library.Group("/piece")
-		{
-			piece.GET("/list", handler.ListWoodPiecesByDatabase) // GET /piece/list?database_id=xxx&limit=10&offset=0
-			piece.GET("/get", handler.GetWoodPiece)              // GET /piece/get?id=xxx
-			piece.POST("/create", handler.CreateWoodPiece)       // POST /piece/create
-			piece.PUT("/update/:id", handler.UpdateWoodPiece)    // PUT /piece/update/:id
-			piece.DELETE("/delete", handler.DeleteWoodPiece)     // DELETE /piece/delete?id=xxx
-		}
+		library.GET("/piece/list", handler.ListWoodPiecesByDatabase) // GET /library-api/piece/list?database_id=xxx&limit=10&offset=0
+		library.GET("/piece/get", handler.GetWoodPiece)              // GET /library-api/piece/get?id=xxx
+		library.POST("/piece/create", handler.CreateWoodPiece)       // POST /library-api/piece/create
+		library.PUT("/piece/update/:id", handler.UpdateWoodPiece)    // PUT /library-api/piece/update/:id
+		library.DELETE("/piece/delete", handler.DeleteWoodPiece)     // DELETE /library-api/piece/delete?id=xxx
 	}
 
 	return r
