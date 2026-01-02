@@ -2,6 +2,7 @@ package router
 
 import (
 	"backend/handler"
+	"backend/middleware"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -27,24 +28,26 @@ func SetupRouter() *gin.Engine {
 		model.POST("/upload", handler.UploadNewModel)
 	}
 
+	// Protected routes - yêu cầu đăng nhập
 	library := r.Group("/library-api")
+	library.Use(middleware.AuthMiddleware()) // Thêm middleware auth
 	{
 		// Upload image
 		library.POST("/upload_image", handler.UploadImage)
 
 		// Wood Database (Collection) - RESTful APIs
-		library.GET("/database/list", handler.ListWoodDatabase)         // GET /library-api/database/list?limit=10&offset=0
-		library.GET("/database/get", handler.GetWoodDatabase)           // GET /library-api/database/get?id=xxx
-		library.POST("/database/create", handler.CreateWoodDatabase)    // POST /library-api/database/create
-		library.PUT("/database/update/:id", handler.UpdateWoodDatabase) // PUT /library-api/database/update/:id
-		library.DELETE("/database/delete", handler.DeleteWoodDatabase)  // DELETE /library-api/database/delete?id=xxx
+		library.GET("/database/list", handler.ListWoodDatabase)
+		library.GET("/database/get", handler.GetWoodDatabase)
+		library.POST("/database/create", handler.CreateWoodDatabase)
+		library.PUT("/database/update/:id", handler.UpdateWoodDatabase)
+		library.DELETE("/database/delete", handler.DeleteWoodDatabase)
 
 		// Wood Piece - RESTful APIs
-		library.GET("/piece/list", handler.ListWoodPiecesByDatabase) // GET /library-api/piece/list?database_id=xxx&limit=10&offset=0
-		library.GET("/piece/get", handler.GetWoodPiece)              // GET /library-api/piece/get?id=xxx
-		library.POST("/piece/create", handler.CreateWoodPiece)       // POST /library-api/piece/create
-		library.PUT("/piece/update/:id", handler.UpdateWoodPiece)    // PUT /library-api/piece/update/:id
-		library.DELETE("/piece/delete", handler.DeleteWoodPiece)     // DELETE /library-api/piece/delete?id=xxx
+		library.GET("/piece/list", handler.ListWoodPiecesByDatabase)
+		library.GET("/piece/get", handler.GetWoodPiece)
+		library.POST("/piece/create", handler.CreateWoodPiece)
+		library.PUT("/piece/update/:id", handler.UpdateWoodPiece)
+		library.DELETE("/piece/delete", handler.DeleteWoodPiece)
 	}
 
 	return r
