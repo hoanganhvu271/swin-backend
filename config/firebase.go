@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"log"
+	"os"
 
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/option"
@@ -14,10 +15,10 @@ func InitFirebase() {
 	ctx := context.Background()
 
 	// For VPS
-	//credPath := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	credPath := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
 	// For local testing
-	credPath := "./serviceAccount.json"
+	//credPath := "./serviceAccount.json"
 
 	if credPath == "" {
 		log.Fatal("GOOGLE_APPLICATION_CREDENTIALS is not set")
