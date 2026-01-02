@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"log"
+	"os"
 
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/option"
@@ -12,9 +13,15 @@ var FirebaseApp *firebase.App
 
 func InitFirebase() {
 	ctx := context.Background()
-	opt := option.WithCredentialsFile("serviceAccount.json")
+	credPath := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	if credPath == "" {
+		log.Fatal("GOOGLE_APPLICATION_CREDENTIALS is not set")
+	}
+
+	opt := option.WithCredentialsFile(credPath)
 
 	config := &firebase.Config{
+		ProjectID:     "swin-55203",
 		StorageBucket: "swin-55203.appspot.com",
 	}
 
@@ -24,4 +31,5 @@ func InitFirebase() {
 	}
 
 	FirebaseApp = app
+	log.Println("Firebase initialized successfully")
 }

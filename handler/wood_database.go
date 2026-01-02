@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"net/http"
-	"strconv"
-
 	"backend/firestore"
 	"backend/models"
+	"log"
+	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -101,7 +101,8 @@ func GetWoodDatabase(c *gin.Context) {
 
 // ListWoodDatabase List all wood_database với phân trang
 func ListWoodDatabase(c *gin.Context) {
-	// Parse query params
+	log.Println("[DEBUG] ListWoodDatabase called")
+
 	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
 	offset, _ := strconv.Atoi(c.DefaultQuery("offset", "0"))
 	orderBy := c.DefaultQuery("order_by", "title")
